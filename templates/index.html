@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣百岳查詢</title>
+    <style>
+        /* 整體頁面設定 */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #2d6a2d;
+            text-align: center;
+        }
+
+        /* 搜尋框區域 */
+        .search-box {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .search-box input {
+            padding: 8px;
+            width: 250px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .search-box button {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #2d6a2d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* 山岳卡片 */
+        .mountain-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .mountain-card h2 {
+            color: #2d6a2d;
+            margin: 0 0 8px 0;
+        }
+
+        /* 沒有搜尋結果時的提示 */
+        .no-result {
+            text-align: center;
+            color: #888;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>台灣百岳查詢 ⛰️</h1>
+
+    <!-- 搜尋框 -->
+    <div class="search-box">
+        <form method="GET" action="/">
+            <input type="text" name="q" placeholder="搜尋山名..." value="{{ keyword }}">
+            <button type="submit">搜尋</button>
+        </form>
+    </div>
+
+    <!-- 山岳清單 -->
+    {% if mountains %}
+        {% for mountain in mountains %}
+        <div class="mountain-card">
+            <h2><a href="/mountain/{{ mountain.name }}" style="color: #2d6a2d; text-decoration: none;">{{ mountain.name }}</a></h2>
+            <p>📍 位置：{{ mountain.location }}</p>
+            <p>🏔️ 山脈：{{ mountain.range }}</p>
+            <p>📏 海拔：{{ mountain.height }} 公尺</p>
+            <p>⚡ 難度：{{ mountain.difficulty }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <!-- 找不到結果 -->
+        <div class="no-result">
+            <p>找不到「{{ keyword }}」相關的山岳 😢</p>
+        </div>
+    {% endif %}
+</body>
+</html>
