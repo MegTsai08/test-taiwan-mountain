@@ -43,6 +43,35 @@
             cursor: pointer;
         }
 
+        /* 國家公園分組區塊 */
+        .park-group {
+            margin: 16px 0;
+        }
+
+        .park-group summary {
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            background-color: #2d6a2d;
+            padding: 10px 16px;
+            border-radius: 6px;
+            list-style: none;
+        }
+
+        .park-group summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .park-group summary::before {
+            content: "▶ ";
+            font-size: 14px;
+        }
+
+        .park-group[open] summary::before {
+            content: "▼ ";
+        }
+
         /* 山岳卡片 */
         .mountain-card {
             background-color: white;
@@ -76,16 +105,21 @@
         </form>
     </div>
 
-    <!-- 山岳清單 -->
-    {% if mountains %}
-        {% for mountain in mountains %}
-        <div class="mountain-card">
-            <h2><a href="/mountain/{{ mountain.name }}" style="color: #2d6a2d; text-decoration: none;">{{ mountain.name }}</a></h2>
-            <p>📍 位置：{{ mountain.location }}</p>
-            <p>🏔️ 山脈：{{ mountain.range }}</p>
-            <p>📏 海拔：{{ mountain.height }} 公尺</p>
-            <p>⚡ 難度：{{ mountain.difficulty }}</p>
-        </div>
+    <!-- 依國家公園分組的山岳清單 -->
+    {% if grouped %}
+        {% for park, mountains in grouped.items() %}
+        <details class="park-group" open>
+            <summary>{{ park }}（{{ mountains|length }} 座）</summary>
+            {% for mountain in mountains %}
+            <div class="mountain-card">
+                <h2><a href="/mountain/{{ mountain.name }}" style="color: #2d6a2d; text-decoration: none;">{{ mountain.name }}</a></h2>
+                <p>📍 位置：{{ mountain.location }}</p>
+                <p>🏔️ 山脈：{{ mountain.range }}</p>
+                <p>📏 海拔：{{ mountain.height }} 公尺</p>
+                <p>⚡ 難度：{{ mountain.difficulty }}</p>
+            </div>
+            {% endfor %}
+        </details>
         {% endfor %}
     {% else %}
         <!-- 找不到結果 -->

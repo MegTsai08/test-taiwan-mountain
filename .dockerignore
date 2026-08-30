@@ -1,0 +1,6 @@
+.venv
+__pycache__
+*.pyc
+.git
+.gitignore
+開發筆記.pdf
